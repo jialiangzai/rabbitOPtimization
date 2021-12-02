@@ -1,5 +1,5 @@
 <template>
-  <div>首页</div>
+  <div class="box">首页</div>
 </template>
 
 <script>
@@ -11,5 +11,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import "~@/styles/variables.less";
+.box {
+  color: @xtxColor;
+}
 </style>
