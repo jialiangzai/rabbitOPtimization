@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header-sticky" :class="{ show: isShow }">
+  <div class="app-header-sticky" :class="{ show: y > 100 }">
     <!-- 吸顶组件 -->
     <div class="container">
       <!-- 首页logo -->
@@ -17,7 +17,9 @@
 
 <script>
 import HeaderNav from './header-nav'
-import { ref } from 'vue'
+// import { ref } from 'vue'
+// 第三方vueuse钩子
+import { useWindowScroll } from '@vueuse/core'
 export default {
   name: 'AppHeaderSticky',
   components: { HeaderNav },
@@ -42,16 +44,18 @@ export default {
   // }
   // vue3写法
   setup () {
-    const isShow = ref(false)
-    window.onscroll = () => {
-      const scrollHights = document.documentElement.scrollTop
-      if (scrollHights > 100) {
-        isShow.value = true
-      } else {
-        isShow.value = false
-      }
-    }
-    return { isShow }
+    // const isShow = ref(false)
+    // window.onscroll = () => {
+    //   const scrollHights = document.documentElement.scrollTop
+    //   if (scrollHights > 100) {
+    //     isShow.value = true
+    //   } else {
+    //     isShow.value = false
+    //   }
+    // }
+    const { y } = useWindowScroll()
+    // return { isShow }
+    return { y }
   }
 }
 
