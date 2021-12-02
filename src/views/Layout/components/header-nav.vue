@@ -1,41 +1,52 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li>
-      <a href="#">美食 </a>
+    <li v-for="v in list" :key="v.id">
+      <a href="#">{{ v.name }}</a>
       <!-- hover效果 end -->
       <div class="layer">
         <ul>
-          <li v-for="v in 9" :key="v">
+          <li v-for="sce in v.children" :key="sce.id">
             <a href="javascript:;">
               <!-- 图片 -->
-              <img
-                src="http://zhoushugang.gitee.io/erabbit-client-pc-static/uploads/img/category%20(4).png"
-                alt=""
-              />
+              <img :src="sce.picture" :alt="sce.name" />
               <!-- 文字 -->
-              <p>果干</p>
+              <p>{{ sce.name }}</p>
             </a>
           </li>
         </ul>
       </div>
       <!-- hover 显示 end -->
     </li>
-    <li><a href="#">餐厨</a></li>
+    <!-- <li><a href="#">餐厨</a></li>
     <li><a href="#">艺术</a></li>
     <li><a href="#">电器</a></li>
     <li><a href="#">居家</a></li>
     <li><a href="#">洗护</a></li>
     <li><a href="#">孕婴</a></li>
     <li><a href="#">服装</a></li>
-    <li><a href="#">杂货</a></li>
+    <li><a href="#">杂货</a></li> -->
   </ul>
 </template>
 
 <script>
 // 一级分类鼠标hover的时候，会展示二级分类列表
+import { useStore } from 'vuex'
+import { onMounted, computed } from 'vue'
 export default {
-  name: 'AppHeaderNav'
+  name: 'AppHeaderNav',
+  setup () {
+    // 存储数据列表
+    const store = useStore()
+    // 组件实例创建后
+    onMounted(() => {
+      store.dispatch('category/getList')
+    })
+    const list = computed(() => {
+      return store.state.category.list
+    })
+    return { list }
+  }
 }
 </script>
 

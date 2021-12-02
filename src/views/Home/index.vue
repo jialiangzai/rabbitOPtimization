@@ -1,5 +1,6 @@
 <template>
   <div class="box">首页</div>
+  <!-- <button @click="$store.dispatch('category/getList')">获取列表</button> -->
 </template>
 
 <script>
