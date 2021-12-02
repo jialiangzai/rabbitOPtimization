@@ -2,7 +2,7 @@
   <div class="home-category">
     <ul class="menu">
       <!-- 一级 -->
-      <li v-for="item in secons" :key="item.id">
+      <li v-for="item in secons" :key="item.id" @mouseenter="cateId = item.id">
         <RouterLink to="/">{{ item.name }}</RouterLink>
         <!--在vue3里面template 只有俩种情况使用
         1. 根据某个状态渲染多个模板的，当做空标签使用  v-if v-else
@@ -15,16 +15,37 @@
         </template>
       </li>
     </ul>
+    <!-- 弹层 -->
+    <!-- 进行处理如果左侧菜单分类没有goods不显示因为和上面的组件不同所以不可item -->
+    <template v-if="cateGoods">
+      <div class="layer">
+        <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
+        <ul>
+          <li v-for="i in cateGoods" :key="i.id">
+            <RouterLink to="/">
+              <img :src="i.picture" alt="" />
+              <div class="info">
+                <p class="name ellipsis-2">{{ i.name }}</p>
+                <p class="desc ellipsis">{{ i.desc }}</p>
+                <p class="price"><i>¥</i>{{ i.price }}</p>
+              </div>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 export default {
   name: 'HomeCategory',
   setup () {
     const store = useStore()
+    // 定义鼠标进入事件的id
+    const cateId = ref(null) // ''也可以接口是字符串
     // 因为首页在头部组件中已经发送请求并存储到vuex中且是响应式的数据
     // const list = computed(() => {
     //   return store.state.category.list
@@ -40,7 +61,13 @@ export default {
         }
       })
     })
-    return { secons }
+    // 计算属性此时可以拿到id去数组进行查找goods属性值----性能用find
+    const cateGoods = computed(() => {
+      // 因为是异步数据响应慢页面还没拿到就会报错用可选链
+      // 还有另一种方式
+      return store.state.category.list.find(item => item.id === cateId.value)?.goods
+    })
+    return { secons, cateId, cateGoods }
   }
 }
 </script>
