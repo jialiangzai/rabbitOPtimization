@@ -17,29 +17,44 @@
 
 <script>
 import HeaderNav from './header-nav'
+import { ref } from 'vue'
 export default {
   name: 'AppHeaderSticky',
   components: { HeaderNav },
   // v2实现
   // 准备一个类名，控制样式让其固定在顶部
-  data () {
-    return {
-      isShow: false
-    }
-  },
+  // data () {
+  //   return {
+  //     isShow: false
+  //   }
+  // },
   // 页面挂载完毕根据页面滚动事件获取滚动的高度去判断满足条件动态添加修改样式
-  created () {
+  // created () {
+  //   window.onscroll = () => {
+  //     // 获取滚动高度
+  //     const scrollHights = document.documentElement.scrollTop
+  //     if (scrollHights > 100) {
+  //       this.isShow = true
+  //     } else {
+  //       this.isShow = false
+  //     }
+  //   }
+  // }
+  // vue3写法
+  setup () {
+    const isShow = ref(false)
     window.onscroll = () => {
-      // 获取滚动高度
       const scrollHights = document.documentElement.scrollTop
       if (scrollHights > 100) {
-        this.isShow = true
+        isShow.value = true
       } else {
-        this.isShow = false
+        isShow.value = false
       }
     }
+    return { isShow }
   }
 }
+
 </script>
 
 <style scoped lang='less'>
