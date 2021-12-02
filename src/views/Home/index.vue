@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~@/styles/variables.less";
+// @import "~@/styles/variables.less";
 .box {
   color: @xtxColor;
 }
