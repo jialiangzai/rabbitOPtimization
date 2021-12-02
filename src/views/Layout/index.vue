@@ -3,6 +3,8 @@
   <TopNav />
   <!-- 头部导航栏 -->
   <XtxHeader />
+  <!-- 吸顶组件 -->
+  <XtxHeaderSticky />
   <main>
     <!-- 二级路由出口 -->
     <router-view></router-view>
@@ -18,12 +20,15 @@ import TopNav from './components/topnav'
 import XtxHeader from './components/header.vue'
 // 底部
 import XtxFooter from './components/footer.vue'
+// 吸顶组件
+import XtxHeaderSticky from './components/header-sticky.vue'
 export default {
   name: 'xtx-layout',
   components: {
     TopNav,
     XtxHeader,
-    XtxFooter
+    XtxFooter,
+    XtxHeaderSticky
   }
 }
 </script>
