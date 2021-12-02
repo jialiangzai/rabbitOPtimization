@@ -1,7 +1,19 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+// Layout
+const Layout = () => import('@/views/Layout')
 // 创建路由实例
 const routes = [
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        path: '/',
+        component: () => import('@/views/Home')
+      }
+    ]
 
+  }
 ]
 
 const router = createRouter({

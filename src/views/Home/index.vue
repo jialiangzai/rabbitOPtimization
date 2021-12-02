@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: 'xtx-home-page',
   setup () {
     return {}
   }
