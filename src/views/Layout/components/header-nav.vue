@@ -1,7 +1,26 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li><a href="#">美食</a></li>
+    <li>
+      <a href="#">美食 </a>
+      <!-- hover效果 end -->
+      <div class="layer">
+        <ul>
+          <li v-for="v in 9" :key="v">
+            <a href="javascript:;">
+              <!-- 图片 -->
+              <img
+                src="http://zhoushugang.gitee.io/erabbit-client-pc-static/uploads/img/category%20(4).png"
+                alt=""
+              />
+              <!-- 文字 -->
+              <p>果干</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- hover 显示 end -->
+    </li>
     <li><a href="#">餐厨</a></li>
     <li><a href="#">艺术</a></li>
     <li><a href="#">电器</a></li>
@@ -14,6 +33,7 @@
 </template>
 
 <script>
+// 一级分类鼠标hover的时候，会展示二级分类列表
 export default {
   name: 'AppHeaderNav'
 }
@@ -46,6 +66,56 @@ export default {
         border-bottom: 1px solid @xtxColor;
       }
     }
+    // 初始样式 不显示
+    .layer {
+      width: 1240px;
+      background-color: #fff;
+      position: absolute;
+      left: -200px;
+      top: 56px;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      box-shadow: 0 0 5px #ccc;
+      // 过渡
+      transition: all 0.2s 0.1s;
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 70px;
+        align-items: center;
+        height: 124px;
+        li {
+          width: 110px;
+          text-align: center;
+          img {
+            width: 60px;
+            height: 60px;
+          }
+          p {
+            padding-top: 10px;
+          }
+          &:hover {
+            p {
+              color: @xtxColor;
+            }
+          }
+        }
+      }
+    }
+    // hover之后显示出来
+    &:hover {
+      > a {
+        color: @xtxColor;
+        border-bottom: 1px solid @xtxColor;
+      }
+      > .layer {
+        // 透明度和高度
+        height: 120px;
+        opacity: 1;
+      }
+    }
+    // end
   }
 }
 </style>
