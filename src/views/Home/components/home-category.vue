@@ -17,11 +17,11 @@
     </ul>
     <!-- 弹层 -->
     <!-- 进行处理如果左侧菜单分类没有goods不显示因为和上面的组件不同所以不可item -->
-    <template v-if="cateGoods">
+    <template v-if="cateGoods && cateGoods.goods">
       <div class="layer">
         <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
         <ul>
-          <li v-for="i in cateGoods" :key="i.id">
+          <li v-for="i in cateGoods.goods" :key="i.id">
             <RouterLink to="/">
               <img :src="i.picture" alt="" />
               <div class="info">
@@ -65,7 +65,8 @@ export default {
     const cateGoods = computed(() => {
       // 因为是异步数据响应慢页面还没拿到就会报错用可选链
       // 还有另一种方式
-      return store.state.category.list.find(item => item.id === cateId.value)?.goods
+      return store.state.category.list.find(item => item.id === cateId.value)
+      // return store.state.category.list.find(item => item.id === cateId.value)?.goods
     })
     return { secons, cateId, cateGoods }
   }
