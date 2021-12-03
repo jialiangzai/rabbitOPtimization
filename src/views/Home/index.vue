@@ -4,6 +4,8 @@
     <HomeCategory />
     <!-- 右侧轮播图 -->
     <HomeBanner />
+    <!-- 新鲜好物 -->
+    <HomeNew />
   </div>
   <!-- <button @click="$store.dispatch('category/getList')">获取列表</button> -->
 </template>
@@ -11,11 +13,14 @@
 <script>
 import HomeCategory from './components/home-category.vue'
 import HomeBanner from './components/home-banner.vue'
+// 新鲜好物
+import HomeNew from './components/home-new.vue'
 export default {
   name: 'xtx-home-page',
   components: {
     HomeCategory,
-    HomeBanner
+    HomeBanner,
+    HomeNew
   },
   setup () {
     return {}
