@@ -27,7 +27,7 @@
         <XtxSkeleton
           :width="24"
           :height="20"
-          style="margin-right: 10px "
+          style="margin-right: 10px"
           bg="#ccc"
         />
       </li>
@@ -46,16 +46,16 @@
 <script>
 // 一级分类鼠标hover的时候，会展示二级分类列表
 import { useStore } from 'vuex'
-import { onMounted, computed } from 'vue'
+import { computed } from 'vue'
 export default {
   name: 'AppHeaderNav',
   setup () {
     // 存储数据列表
     const store = useStore()
-    // 组件实例创建后
-    onMounted(() => {
-      store.dispatch('category/getList')
-    })
+    // 组件实例创建后 复用会触发两次请求
+    // onMounted(() => {
+    //   store.dispatch('category/getList')
+    // })
     const list = computed(() => {
       return store.state.category.list
     })

@@ -22,6 +22,9 @@ import XtxHeader from './components/header.vue'
 import XtxFooter from './components/footer.vue'
 // 吸顶组件
 import XtxHeaderSticky from './components/header-sticky.vue'
+// 在根组件中发请求尽管复用后代组件不会重复发送请求
+import { useStore } from 'vuex'
+import { onMounted } from 'vue'
 export default {
   name: 'xtx-layout',
   components: {
@@ -29,7 +32,14 @@ export default {
     XtxHeader,
     XtxFooter,
     XtxHeaderSticky
+  },
+  setup () {
+    const store = useStore()
+    onMounted(() => {
+      store.dispatch('category/getList')
+    })
   }
+
 }
 </script>
 
