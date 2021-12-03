@@ -1,5 +1,5 @@
 <template>
-  <home-panel title="人气推荐" subTitle="人气爆款 不容错过">
+  <home-panel title="人气推荐" subTitle="人气爆款 不容错过" ref="hot">
     <template #right>
       <!-- 使用了更多组件 -->
       <xtx-more></xtx-more>
@@ -20,18 +20,31 @@
 import homePanel from './home-panel.vue'
 import { findHot } from '@/api/home'
 import { ref } from 'vue'
+// 组件懒加载
+import { useIntersectionObserver } from '@vueuse/core'
 export default {
   name: 'HomeHot',
   components: { homePanel },
   setup () {
     const list = ref([])
+    // 监听的元素
+    const hot = ref(null)
+    // 每次被监听的dom进入移出视口时都会触发一次，而不是只触发一次
+    const { stop } = useIntersectionObserver(hot,
+      ([{ isIntersecting }, ele]) => {
+        console.log('组价进入了视口', isIntersecting)
+        if (isIntersecting) {
+          // 进入一次之后就停止监听元素
+          stop()
+          getListHot()
+        }
+      })
     const getListHot = async () => {
       const { result } = await findHot()
       console.log('人气推荐', result)
       list.value = result
     }
-    getListHot()
-    return { list, getListHot }
+    return { list, getListHot, hot }
   }
 }
 </script>
