@@ -1,23 +1,37 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="v in list" :key="v.id">
-      <a href="#">{{ v.name }}</a>
-      <!-- hover效果 end -->
-      <div class="layer">
-        <ul>
-          <li v-for="sce in v.children" :key="sce.id">
-            <a href="javascript:;">
-              <!-- 图片 -->
-              <img :src="sce.picture" :alt="sce.name" />
-              <!-- 文字 -->
-              <p>{{ sce.name }}</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <!-- hover 显示 end -->
-    </li>
+    <!-- 有数据的时候 -->
+    <template v-if="list.length">
+      <li v-for="v in list" :key="v.id">
+        <a href="#">{{ v.name }}</a>
+        <!-- hover效果 end -->
+        <div class="layer">
+          <ul>
+            <li v-for="sce in v.children" :key="sce.id">
+              <a href="javascript:;">
+                <!-- 图片 -->
+                <img :src="sce.picture" :alt="sce.name" />
+                <!-- 文字 -->
+                <p>{{ sce.name }}</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- hover 显示 end -->
+      </li>
+    </template>
+    <!-- 无数据时候骨架屏 -->
+    <template v-else>
+      <li v-for="vs in 9" :key="vs">
+        <XtxSkeleton
+          :width="24"
+          :height="20"
+          style="margin-right: 10px "
+          bg="#ccc"
+        />
+      </li>
+    </template>
     <!-- <li><a href="#">餐厨</a></li>
     <li><a href="#">艺术</a></li>
     <li><a href="#">电器</a></li>

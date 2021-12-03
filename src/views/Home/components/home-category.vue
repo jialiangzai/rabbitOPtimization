@@ -1,20 +1,50 @@
 <template>
-  <XtxSkeleton :width="100" :height="30" bg="blue" />
   <div class="home-category">
     <ul class="menu">
-      <!-- 一级 -->
-      <li v-for="item in secons" :key="item.id" @mouseenter="cateId = item.id">
-        <RouterLink to="/">{{ item.name }}</RouterLink>
-        <!--在vue3里面template 只有俩种情况使用
+      <!-- 有数据时一级 -->
+      <template v-if="secons.length">
+        <li
+          v-for="item in secons"
+          :key="item.id"
+          @mouseenter="cateId = item.id"
+        >
+          <RouterLink to="/">{{ item.name }}</RouterLink>
+          <!--在vue3里面template 只有俩种情况使用
         1. 根据某个状态渲染多个模板的，当做空标签使用  v-if v-else
         2. 插槽的场景    <tempalte #default></template>  <tempalte #footer></template>-->
-        <!-- 二级 -->
-        <template v-if="item.children">
-          <RouterLink v-for="sub in item.children" :key="sub.id" to="/">
-            {{ sub.name }}
-          </RouterLink>
-        </template>
-      </li>
+          <!-- 二级 -->
+          <template v-if="item.children">
+            <RouterLink v-for="sub in item.children" :key="sub.id" to="/">
+              {{ sub.name }}
+            </RouterLink>
+          </template>
+        </li>
+      </template>
+      <!-- 无数据时的骨架屏 -->
+      <template v-else>
+        <li v-for="nums in 9" :key="nums">
+          <!-- 一级 -->
+          <XtxSkeleton
+            :width="40"
+            :height="20"
+            style="margin-right: 10px"
+            bg="rgba(255,255,255,0.2)"
+          />
+          <!-- 二级 -->
+          <XtxSkeleton
+            :width="50"
+            :height="20"
+            style="margin-right: 5px"
+            bg="rgba(255,255,255,0.2)"
+          />
+          <XtxSkeleton
+            :width="50"
+            :height="20"
+            style="margin-right: 5px"
+            bg="rgba(255,255,255,0.2)"
+          />
+        </li>
+      </template>
     </ul>
     <!-- 弹层 -->
     <!-- 进行处理如果左侧菜单分类没有goods不显示因为和上面的组件不同所以不可item -->
