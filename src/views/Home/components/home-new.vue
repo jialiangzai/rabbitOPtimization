@@ -2,9 +2,8 @@
 <template>
   <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
     <template #right>
-      <!-- 使用了更多组件 -->
       <xtx-more></xtx-more>
-    </template> 
+    </template>
     <template #default>
       <ul ref="pannel" class="goods-list">
         <li v-for="item in list" :key="item.id">
