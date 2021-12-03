@@ -1,4 +1,5 @@
 <template>
+  <XtxSkeleton :width="100" :height="30" bg="blue" />
   <div class="home-category">
     <ul class="menu">
       <!-- 一级 -->
