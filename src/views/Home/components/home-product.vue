@@ -1,5 +1,5 @@
 <template>
-  <div class="home-product">
+  <div class="home-product" ref="target">
     <!-- 面板组件 -->
     <HomePanel :title="i.name" v-for="i in List" :key="i.id">
       <template #right>
@@ -35,6 +35,8 @@ import HomeGoods from './home-goods'
 // 获取所有商品信息
 import { findGoods } from '@/api/home'
 import { ref } from 'vue'
+// 组件懒加载
+import { useObserver } from '@/hooks/index'
 export default {
   name: 'HomeProduct',
   components: { HomePanel, HomeGoods },
@@ -45,9 +47,11 @@ export default {
       // console.log('全部商品', result)
       List.value = result
     }
-    getList()
+    // getList()
+    const { target } = useObserver(getList)
     return {
-      List
+      List,
+      target
     }
   }
 }
