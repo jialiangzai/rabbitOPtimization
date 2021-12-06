@@ -7,7 +7,7 @@
           <li>
             <a href="javascript:;"><i class="iconfont icon-user"></i>赛罗</a>
           </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logOut">退出登录</a></li>
         </template>
         <!-- 未登录状态 v-else必须写-->
         <template v-else>
@@ -35,15 +35,22 @@
 // vuex中token判断是否登录
 import { useStore } from 'vuex'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'AppTopnav',
   setup () {
     // 获取store实例
     const store = useStore()
+    const router = useRouter()
     // 变量
     const userId = ref('')
     const { token } = store.state.user.profile
-    return { token, userId }
+    // 退出
+    const logOut = () => {
+      store.dispatch('user/logOut')
+      router.replace('/login')
+    }
+    return { token, userId, logOut }
   }
 }
 </script>

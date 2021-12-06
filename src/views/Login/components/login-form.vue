@@ -78,6 +78,10 @@ import { Form, Field } from 'vee-validate'
 import { ref } from 'vue'
 // 校验
 import rulesFns from '@/utils/vee-validate-schema'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+// 信息提示
+import msg from '@/components/Message/index'
 export default {
   name: 'LoginForm',
   components: {
@@ -85,12 +89,17 @@ export default {
     Field
   },
   setup () {
+    const store = useStore()
+    // 路由实例
+    const router = useRouter()
+    // 路由参数
+    const route = useRoute()
     // form表单
     const formData = ref(null)
     // 表单数据
     const fm = ref({
-      account: '',
-      password: '',
+      account: 'xiaotuxian001',
+      password: '123456',
       isAgree: false
     })
     // 校验规则
@@ -103,10 +112,22 @@ export default {
     const submit = async () => {
       // 整体校验
       // 返回Promise
-      const valid = await formData.value.validate()
+      const { valid } = await formData.value.validate()
       // console.log(res)
       if (valid) {
-        console.log('loading')
+        // console.log('loading')
+        /**
+         * 1. 登录校验完毕执行vuex存储登录人信息做全局数据共享并长久化之后必须在次基础上跳转
+         * 2. 跳转页面首页(可携带参数)
+         */
+        try {
+          await store.dispatch('user/getUse', fm.value)
+          router.replace(route.query.redirectUrl || '/')
+          msg({ type: 'success', text: '登录成功' })
+        } catch (error) {
+          console.dir(error)
+          msg({ type: 'error', text: error.response.data.message })
+        }
       }
     }
     return { rules, fm, formData, submit }
