@@ -3,6 +3,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const Layout = () => import('@/views/Layout')
 // 详情
 const Detail = () => import('@/views/Goods')
+// 登录
+const Login = () => import('@/views/Login')
 // 创建路由实例
 const routes = [
   {
@@ -20,6 +22,11 @@ const routes = [
       }
     ]
 
+  },
+  // 一级路由登录页面
+  {
+    path: '/login',
+    component: Login
   }
 ]
 

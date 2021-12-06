@@ -11,7 +11,12 @@
         </template>
         <!-- 未登录状态 v-else必须写-->
         <template v-else>
-          <li><a href="javascript:;">请先登录</a></li>
+          <li>
+            <!-- <a href="javascript:;" @click="$router.replace('/login')">
+              请先登录
+            </a> -->
+            <RouterLink to="/login">请先登录</RouterLink>
+          </li>
           <li><a href="javascript:;">免费注册</a></li>
         </template>
         <li><a href="javascript:;">我的订单</a></li>
