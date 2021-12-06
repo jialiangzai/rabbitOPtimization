@@ -26,6 +26,8 @@
           <GoodsName />
           <!-- 新增 sku -->
           <GoodsSku :goods="goods" @change="getSku" />
+          <!-- 控制数量组件 -->
+          <Numbox />
         </div>
       </div>
       <!-- 商品详情 -->
@@ -52,12 +54,15 @@ import { ref, provide } from 'vue'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales'
 import GoodsName from './components/goods-name'
+// 数量组件
+import Numbox from '@/components/Numbox'
 export default {
   name: 'XtxGoodsPage',
   components: {
     GoodsImage,
     GoodsSales,
-    GoodsName
+    GoodsName,
+    Numbox
   },
   setup () {
     const goods = ref({})
