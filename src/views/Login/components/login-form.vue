@@ -6,6 +6,7 @@
       :validation-schema="rules"
       v-slot="{ errors }"
       autocomplete="off"
+      ref="formData"
     >
       <p>{{ errors }}</p>
       <div class="form-item">
@@ -57,7 +58,7 @@
           <i class="iconfont icon-warning" />{{ errors.isAgree }}
         </div>
       </div>
-      <a href="javascript:;" class="btn">登录</a>
+      <a href="javascript:;" class="btn" @click="submit">登录</a>
     </Form>
     <div class="action">
       <img
@@ -84,6 +85,8 @@ export default {
     Field
   },
   setup () {
+    // form表单
+    const formData = ref(null)
     // 表单数据
     const fm = ref({
       account: '',
@@ -96,7 +99,17 @@ export default {
       password: rulesFns.password,
       isAgree: rulesFns.isAgree
     }
-    return { rules, fm }
+    // 点击登录按钮
+    const submit = async () => {
+      // 整体校验
+      // 返回Promise
+      const valid = await formData.value.validate()
+      // console.log(res)
+      if (valid) {
+        console.log('loading')
+      }
+    }
+    return { rules, fm, formData, submit }
   }
 }
 </script>
