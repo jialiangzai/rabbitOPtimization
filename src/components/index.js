@@ -8,7 +8,9 @@ import More from './More'
 // 面包屑
 import Bread from './Bread/index.vue'
 import BreadItems from './Bread/item.vue'
-const cpp = [Skeleton, Slider, More, Bread, BreadItems]
+// 城市
+import City from './City'
+const cpp = [Skeleton, Slider, More, Bread, BreadItems, City]
 export default {
   install (app) {
     cpp.forEach(cp => {

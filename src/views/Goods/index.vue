@@ -18,9 +18,13 @@
         <!-- 图片预览区 -->
         <div class="media">
           <GoodsImage :imgs="goods.mainPictures" />
+          <!-- 信息 -->
+          <GoodsSales />
         </div>
         <!-- 商品信息区 -->
-        <div class="spec"></div>
+        <div class="spec">
+          <GoodsName />
+        </div>
       </div>
       <!-- 商品详情 -->
       <div class="goods-footer">
@@ -44,10 +48,14 @@ import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 // 左侧图片预览
 import GoodsImage from './components/goods-image.vue'
+import GoodsSales from './components/goods-sales'
+import GoodsName from './components/goods-name'
 export default {
   name: 'XtxGoodsPage',
   components: {
-    GoodsImage
+    GoodsImage,
+    GoodsSales,
+    GoodsName
   },
   setup () {
     const goods = ref({})
