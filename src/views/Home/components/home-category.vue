@@ -53,7 +53,8 @@
         <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
         <ul>
           <li v-for="i in cateGoods.goods" :key="i.id">
-            <RouterLink to="/">
+            <!-- 跳转详情页 -->
+            <RouterLink :to="`/goods/${i.id}`">
               <img :src="i.picture" alt="" />
               <div class="info">
                 <p class="name ellipsis-2">{{ i.name }}</p>
