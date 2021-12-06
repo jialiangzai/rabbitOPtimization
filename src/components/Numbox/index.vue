@@ -9,19 +9,50 @@
   </div>
 </template>
 <script>
+// 控制最大最小数量 活动 最大值 库存 或父组件传递的数据 最小值 1 或 父组件传递的数据
+// 目的：组件复用最大化
+
 import { ref } from 'vue'
 export default {
+  // 自定义组件身上使用v-model指令，可以同步组件内部数据的变化到父组件
   name: 'XtxNumbox',
-  setup () {
+  emits: ['update:modelValue'],
+  props: {
+    modelValue: {
+      type: Number,
+      default: 1
+    },
+    min: {
+      type: Number,
+      default: 1
+    },
+    max: {
+      type: Number,
+      default: 5
+    }
+  },
+  setup (props, { emit }) {
+    // props.max
+    // props.min
     // 定义当前数量
     const num = ref(1)
     // 加
     const add = () => {
+      if (num.value === props.max) {
+        return
+      }
       num.value++
+      // 子传父 控制
+      emit('update:modelValue', num.value)
     }
     // 减
     const sub = () => {
+      if (num.value === props.min) {
+        return
+      }
       num.value--
+      // 子传父 控制
+      emit('update:modelValue', num.value)
     }
     return {
       add,

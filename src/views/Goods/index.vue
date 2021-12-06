@@ -27,7 +27,7 @@
           <!-- 新增 sku -->
           <GoodsSku :goods="goods" @change="getSku" />
           <!-- 控制数量组件 -->
-          <Numbox />
+          <Numbox :max="goods.inventory" :min="1" v-model="numP" />
         </div>
       </div>
       <!-- 商品详情 -->
@@ -65,6 +65,8 @@ export default {
     Numbox
   },
   setup () {
+    // 数量
+    const numP = ref(20)
     const goods = ref({})
     // 路由参数实例
     const route = useRoute()
@@ -94,7 +96,7 @@ export default {
       goods.value.price = skuObj.price
       goods.value.oldPrice = skuObj.oldPrice
     }
-    return { getList, goods, getSku }
+    return { getList, goods, getSku, numP }
   }
 }
 </script>
