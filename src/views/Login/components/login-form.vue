@@ -1,31 +1,64 @@
 <template>
   <div class="account-box">
-    <div class="form">
+    <!-- 使用第三方组件 不用再form上绑定v-model -->
+    <Form
+      class="form"
+      :validation-schema="rules"
+      v-slot="{ errors }"
+      autocomplete="off"
+    >
+      <p>{{ errors }}</p>
       <div class="form-item">
         <div class="input">
           <i class="iconfont icon-user"></i>
-          <input type="text" placeholder="请输入用户名或手机号" />
+          <Field
+            type="text"
+            placeholder="请输入用户名或手机号"
+            v-model="fm.account"
+            name="account"
+            :class="{ error: errors.account }"
+          />
         </div>
         <!-- 表单验证错误信息提示 -->
-        <!-- <div class="error"><i class="iconfont icon-warning" />请输入手机号</div> -->
+        <div class="error" v-show="errors.account">
+          <i class="iconfont icon-warning" />{{ errors.account }}
+        </div>
       </div>
       <div class="form-item">
         <div class="input">
           <i class="iconfont icon-lock"></i>
-          <input type="password" placeholder="请输入密码" />
+          <Field
+            type="password"
+            placeholder="请输入密码"
+            v-model="fm.password"
+            name="password"
+            :class="{ error: errors.password }"
+          />
+        </div>
+        <!-- 表单验证错误信息提示 -->
+        <div class="error" v-show="errors.password">
+          <i class="iconfont icon-warning" />{{ errors.password }}
         </div>
       </div>
       <div class="form-item">
         <div class="agree">
-          <XtxCheckBox />
-          <span>我已同意</span>
+          <!-- 我同意单选框 -->
+          <!-- <XtxCheckbox /> name="password" -->
+          <Field as="XtxCheckbox" name="isAgree" v-model="fm.isAgree">
+            <!-- 支持插槽 -->
+            <span>我已同意</span>
+          </Field>
           <a href="javascript:;">《隐私条款》</a>
           <span>和</span>
           <a href="javascript:;">《服务条款》</a>
         </div>
+        <!-- 表单验证错误信息提示 -->
+        <div class="error" v-show="errors.isAgree">
+          <i class="iconfont icon-warning" />{{ errors.isAgree }}
+        </div>
       </div>
       <a href="javascript:;" class="btn">登录</a>
-    </div>
+    </Form>
     <div class="action">
       <img
         src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png"
@@ -38,7 +71,35 @@
     </div>
   </div>
 </template>
-
+<script>
+// 第三方表单校验组件 定义校验规则
+import { Form, Field } from 'vee-validate'
+import { ref } from 'vue'
+// 校验
+import rulesFns from '@/utils/vee-validate-schema'
+export default {
+  name: 'LoginForm',
+  components: {
+    Form,
+    Field
+  },
+  setup () {
+    // 表单数据
+    const fm = ref({
+      account: '',
+      password: '',
+      isAgree: false
+    })
+    // 校验规则
+    const rules = {
+      account: rulesFns.account,
+      password: rulesFns.password,
+      isAgree: rulesFns.isAgree
+    }
+    return { rules, fm }
+  }
+}
+</script>
 <style lang="less" scoped>
 // 账号容器
 .account-box {

@@ -12,7 +12,9 @@ import BreadItems from './Bread/item.vue'
 import City from './City'
 // sku
 import Sku from './Sku/index.vue'
-const cpp = [Skeleton, Slider, More, Bread, BreadItems, City, Sku]
+// 可选框我同意
+import CheckBoxxtx from './CheckBox'
+const cpp = [Skeleton, Slider, More, Bread, BreadItems, City, Sku, CheckBoxxtx]
 export default {
   install (app) {
     cpp.forEach(cp => {
