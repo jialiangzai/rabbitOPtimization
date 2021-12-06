@@ -45,7 +45,7 @@
 // 2. 在组件setup中获取商品详情数据
 import { findGoods } from '@/api/goods'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 // 左侧图片预览
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales'
@@ -66,6 +66,7 @@ export default {
       console.log('商品详情数据', result)
       goods.value = result
     }
+    provide('goods', goods)
     getList()
     return { getList, goods }
   }
