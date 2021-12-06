@@ -21,6 +21,7 @@ export function useObserver (ajaxFn) {
       }
     },
     {
+      // 进入当前元素可视区域的比例是多少才执行回调 0-1 值越大 代表需要进入的面积越大
       threshold: 0
     })
   // 一定要返回监听的元素

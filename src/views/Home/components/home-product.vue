@@ -12,7 +12,8 @@
       </template>
       <div class="box">
         <RouterLink class="cover" to="/">
-          <img :src="i.picture" alt="" />
+          <!-- <img :src="i.picture" alt="" /> 无脑加载-->
+          <img v-imglazy="i.picture" alt="" />
           <strong class="label">
             <span>{{ i.name }}馆</span>
             <span>{{ i.saleInfo }}</span>
