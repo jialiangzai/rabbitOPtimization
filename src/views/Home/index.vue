@@ -8,6 +8,8 @@
     <HomeNew />
     <!-- 人气推荐 -->
     <HomeHot />
+    <!-- 楼层组件 -->
+    <HomeProduct />
   </div>
   <!-- <button @click="$store.dispatch('category/getList')">获取列表</button> -->
 </template>
@@ -19,13 +21,16 @@ import HomeBanner from './components/home-banner.vue'
 import HomeNew from './components/home-new.vue'
 // 人气推荐
 import HomeHot from './components/home-hot.vue'
+// 楼层
+import HomeProduct from './components/home-product.vue'
 export default {
   name: 'xtx-home-page',
   components: {
     HomeCategory,
     HomeBanner,
     HomeNew,
-    HomeHot
+    HomeHot,
+    HomeProduct
   },
   setup () {
     return {}
