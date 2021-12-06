@@ -19,6 +19,9 @@ export function useObserver (ajaxFn) {
         // 唯一不同的调用接口
         ajaxFn()
       }
+    },
+    {
+      threshold: 0
     })
   // 一定要返回监听的元素
   return { target }
