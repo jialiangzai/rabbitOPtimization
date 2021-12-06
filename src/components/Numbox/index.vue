@@ -12,7 +12,7 @@
 // 控制最大最小数量 活动 最大值 库存 或父组件传递的数据 最小值 1 或 父组件传递的数据
 // 目的：组件复用最大化
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 export default {
   // 自定义组件身上使用v-model指令，可以同步组件内部数据的变化到父组件
   name: 'XtxNumbox',
@@ -31,6 +31,9 @@ export default {
       default: 5
     }
   },
+  //   1. 给一个组件身上绑定的任何属性都不会丢失，都会传递下去，如果我们使用props接受收被存入到props属性对象中，如果不使用props接收，会被存入attrs属性对象里
+  // 2. 组件一般都有俩种状态，一个是自己维护的响应式数据 （data）一个是由父组件传下来的数据，v- model语法糖它只能保证父组件中的数据可以同步到props这一层，如果你想让父组件中数据和自己维护的数据保持同步的话，需要自行监听props中的数据，在回调中完成数据同步
+
   setup (props, { emit }) {
     // props.max
     // props.min
@@ -54,6 +57,13 @@ export default {
       // 子传父 控制
       emit('update:modelValue', num.value)
     }
+    watch(() => props.modelValue, (newval) => {
+      // 同步父子组件数据
+      num.value = newval
+    }, {
+      // 第一次会失败----不同步
+      immediate: true
+    })
     return {
       add,
       sub,
