@@ -24,6 +24,8 @@
         <!-- 商品信息区 -->
         <div class="spec">
           <GoodsName />
+          <!-- 新增 sku -->
+          <GoodsSku :goods="goods" @change="getSku" />
         </div>
       </div>
       <!-- 商品详情 -->
@@ -68,7 +70,26 @@ export default {
     }
     provide('goods', goods)
     getList()
-    return { getList, goods }
+    // 改变sku事件
+    // 产出当前选择的商品规格信息，如果是完整的sku，产出完整的对象信息，如果不完整，则产出空对象
+    // skuId  sku唯一标识id
+    // goods 商品信息对象必须包含specs数组和skus数组
+    /**
+   * 根据不同sku对象显示不同库存和价格
+   */
+    const getSku = (skuObj) => {
+      console.log('完整的sku数据', skuObj)
+      // 根据id排除skuObj为空对象----sku无效
+      if (!skuObj.skuId) {
+        return
+      }
+      // 库存
+      goods.value.inventory = skuObj.inventory
+      // 价格 新+老
+      goods.value.price = skuObj.price
+      goods.value.oldPrice = skuObj.oldPrice
+    }
+    return { getList, goods, getSku }
   }
 }
 </script>
