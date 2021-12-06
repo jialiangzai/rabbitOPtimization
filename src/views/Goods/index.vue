@@ -34,6 +34,10 @@
             :modelValue="numP"
             @update:modelValue="numP = $event"
           />
+          <!-- 加入购物车 -->
+          <Buttons type="large" bg="primary" style="margin-top: 10px"
+            >加入购物车</Buttons
+          >
         </div>
       </div>
       <!-- 商品详情 -->
@@ -41,10 +45,30 @@
         <div class="goods-article">
           <div class="goods-tabs">
             <!-- 详情图片列表 -->
-            <img />
+            <img
+              v-for="(imgs, i) in goods.details.pictures"
+              :key="i"
+              v-imglazy="imgs"
+            />
           </div>
         </div>
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+          <h3 class="top">24小时热榜</h3>
+          <div class="hotbor">
+            <ul>
+              <li v-for="(hot, i) in goods.hotByDay" :key="i">
+                <div class="goods-item">
+                  <RouterLink :to="`/goods/${hot.id}`" class="image">
+                    <img v-imglazy="hot.picture" alt="" />
+                  </RouterLink>
+                  <p class="name ellipsis">{{ hot.name }}</p>
+                  <p class="desc ">{{ hot.desc }}</p>
+                  <p class="price">&yen;{{ hot.price }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -62,13 +86,16 @@ import GoodsSales from './components/goods-sales'
 import GoodsName from './components/goods-name'
 // 数量组件
 import Numbox from '@/components/Numbox'
+// 加入购物车
+import Buttons from '@/components/Button'
 export default {
   name: 'XtxGoodsPage',
   components: {
     GoodsImage,
     GoodsSales,
     GoodsName,
-    Numbox
+    Numbox,
+    Buttons
   },
   setup () {
     // 数量
@@ -108,6 +135,57 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.goods-item {
+  width: 240px;
+  height: 300px;
+  padding: 10px 30px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: all 0.5s;
+  .image {
+    display: block;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  p {
+    margin-top: 6px;
+    font-size: 16px;
+    text-align: center;
+    // &.name {
+    //   height: 44px;
+    // }
+    &.desc {
+      color: #666;
+      height: 22px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &.price {
+      margin-top: 10px;
+      font-size: 20px;
+      color: @priceColor;
+    }
+  }
+}
+
+.top {
+  height: 70px;
+  background: #e26237;
+  color: #fff;
+  font-size: 18px;
+  line-height: 70px;
+  padding-left: 25px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  text-align: center;
+}
 .goods-info {
   min-height: 600px;
   background: #fff;
@@ -139,6 +217,7 @@ export default {
 .goods-tabs {
   min-height: 600px;
   background: #fff;
+  // 图片充满盒子
   img {
     width: 100%;
   }
