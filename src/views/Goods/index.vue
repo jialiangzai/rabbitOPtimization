@@ -146,7 +146,7 @@ export default {
     // 3. 调用action传入当前商品必要数据存到vuex
     // 4. 成功后提示
 
-    const addCart = () => {
+    const addCart = async () => {
       if (!skuVal.value) {
         return msg({ type: 'warn', text: '请选择商品规格' })
       }
@@ -167,7 +167,13 @@ export default {
         isEffective: true,
         count: numP.value
       })
-      store.dispatch('cart/cartDetail', cartDetail)
+      try {
+        const res = await store.dispatch('cart/addCartListActions', cartDetail)
+        console.log(res)
+        msg({ type: 'success', text: res })
+      } catch (error) {
+        msg({ type: 'error', text: '加入失败' })
+      }
     }
     return { getList, goods, getSku, numP, addCart }
   }

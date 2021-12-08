@@ -25,6 +25,7 @@ export default {
       }
     }
   },
+  // actions中的函数是promise对象并返回的也是一个promise对象
   actions: {
     // 异步----登录状态和未登录状态都要进行管理
     // 加入购物车
@@ -33,12 +34,13 @@ export default {
      * @param {*} param0  上下文vuex中的钩子
      * @param {*} good 调用方法时候传递的商品数据(当前加入cart商品数据)
      */
-    addCartListActions ({ commit, rootState }, good) {
+    async addCartListActions ({ commit, rootState }, good) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
       } else {
         commit('addCartList', good)
+        return '加入购物车成功'
       }
     }
   }
