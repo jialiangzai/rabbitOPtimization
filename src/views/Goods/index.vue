@@ -35,7 +35,11 @@
             @update:modelValue="numP = $event"
           />
           <!-- 加入购物车 -->
-          <Buttons type="large" bg="primary" style="margin-top: 10px"
+          <Buttons
+            type="large"
+            bg="primary"
+            style="margin-top: 10px"
+            @click="addCart"
             >加入购物车</Buttons
           >
         </div>
@@ -62,7 +66,7 @@
                     <img v-imglazy="hot.picture" alt="" />
                   </RouterLink>
                   <p class="name ellipsis">{{ hot.name }}</p>
-                  <p class="desc ">{{ hot.desc }}</p>
+                  <p class="desc">{{ hot.desc }}</p>
                   <p class="price">&yen;{{ hot.price }}</p>
                 </div>
               </li>
@@ -79,7 +83,7 @@
 // 2. 在组件setup中获取商品详情数据
 import { findGoods } from '@/api/goods'
 import { useRoute } from 'vue-router'
-import { ref, provide } from 'vue'
+import { ref, provide, reactive } from 'vue'
 // 左侧图片预览
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales'
@@ -88,6 +92,9 @@ import GoodsName from './components/goods-name'
 import Numbox from '@/components/Numbox'
 // 加入购物车
 import Buttons from '@/components/Button'
+// message
+import msg from '@/components/Message'
+import { useStore } from 'vuex'
 export default {
   name: 'XtxGoodsPage',
   components: {
@@ -98,6 +105,7 @@ export default {
     Buttons
   },
   setup () {
+    const store = useStore()
     // 数量
     const numP = ref(2)
     const goods = ref({})
@@ -117,10 +125,12 @@ export default {
     /**
    * 根据不同sku对象显示不同库存和价格
    */
+    const skuVal = ref(null)
     const getSku = (skuObj) => {
       console.log('完整的sku数据', skuObj)
       // 根据id排除skuObj为空对象----sku无效
       if (!skuObj.skuId) {
+        skuVal.value = null
         return
       }
       // 库存
@@ -128,8 +138,38 @@ export default {
       // 价格 新+老
       goods.value.price = skuObj.price
       goods.value.oldPrice = skuObj.oldPrice
+      skuVal.value = skuObj
     }
-    return { getList, goods, getSku, numP }
+    // 加入购物车
+    // 1. 存储当前选择完规格生成的sku商品数据
+    // 2. 没有选择商品规格或库存不足不能添加
+    // 3. 调用action传入当前商品必要数据存到vuex
+    // 4. 成功后提示
+
+    const addCart = () => {
+      if (!skuVal.value) {
+        return msg({ type: 'warn', text: '请选择商品规格' })
+      }
+      if (!skuVal.value.inventory === 0) {
+        return msg({ type: 'warn', text: '库存不足' })
+      }
+      // 调用actions存储商品类 ----实现持久化同步数据
+      const cartDetail = reactive({
+        id: goods.value.id,
+        name: goods.value.name,
+        picture: goods.value.mainPictures[0],
+        skuId: skuVal.value.skuId,
+        price: skuVal.value.oldPrice,
+        nowPrice: skuVal.value.price,
+        attrsText: skuVal.value.specsText,
+        stock: skuVal.value.inventory,
+        selected: true,
+        isEffective: true,
+        count: numP.value
+      })
+      // store.dispatch(cartDetail)
+    }
+    return { getList, goods, getSku, numP, addCart, cartDetail }
   }
 }
 </script>
