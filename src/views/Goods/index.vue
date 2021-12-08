@@ -167,9 +167,9 @@ export default {
         isEffective: true,
         count: numP.value
       })
-      // store.dispatch(cartDetail)
+      store.dispatch('cart/cartDetail', cartDetail)
     }
-    return { getList, goods, getSku, numP, addCart, cartDetail }
+    return { getList, goods, getSku, numP, addCart }
   }
 }
 </script>
