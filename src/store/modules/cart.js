@@ -8,6 +8,31 @@ export default {
     cart: []
   }),
   getters: {
+    // 1. 有效商品列表=》无效商品（没库存或下架了）
+    // 2. 选中的购物车商品数据
+    // 3. 选中商品总价
+    // 4. 购物车中有效商品是否是全部选中状态
+
+    // 有效商品列表=
+    effectiveList: (state) => {
+      return state.cart.filter(item => item.isEffective === true)
+    },
+    // 选中的购物车商品数据
+    validateSel: (state, getters) => {
+      return getters.effectiveList.filter(item => item.selected)
+    },
+    // 选中商品总价 现单价*数量
+    validateTotal: (state, getters) => {
+      return getters.validateSel.reduce((total, item) => (total += item.nowPrice * item.count), 0)
+    },
+    // 购物车中有效商品是否是全部选中状态
+    isAll: (state, getters) => {
+      return getters.effectiveList.every(item => item.selected)
+    },
+    // 有效商品总数量 把effctiveList中的每一项的count叠加起来
+    effectAll: (state, getters) => {
+      return getters.effectiveList.reduce((alls, item) => (alls += item.count), 0)
+    }
   },
   mutations: {
     // state中的数据只能通过mutations同步函数更改

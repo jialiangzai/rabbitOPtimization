@@ -11,21 +11,22 @@
         <input type="text" placeholder="搜一搜" />
       </div>
       <!-- 购物车 -->
-      <div class="cart">
-        <a class="curr" href="#">
-          <i class="iconfont icon-cart"></i><em>2</em>
-        </a>
-      </div>
+      <HeaderCart />
     </div>
   </header>
 </template>
 
 <script>
 import XtxHeaderNavs from './header-nav.vue'
+// 头部购物车
+import HeaderCart from './header-cart.vue'
+
 export default {
   name: 'AppHeader',
   components: {
-    XtxHeaderNavs
+    XtxHeaderNavs,
+    HeaderCart
+
   }
 }
 </script>

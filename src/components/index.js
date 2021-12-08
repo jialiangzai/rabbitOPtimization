@@ -14,7 +14,8 @@ import City from './City'
 import Sku from './Sku/index.vue'
 // 可选框我同意
 import CheckBoxxtx from './CheckBox'
-const cpp = [Skeleton, Slider, More, Bread, BreadItems, City, Sku, CheckBoxxtx]
+import Buttons from './Button'
+const cpp = [Skeleton, Slider, More, Bread, BreadItems, City, Sku, CheckBoxxtx, Buttons]
 export default {
   install (app) {
     cpp.forEach(cp => {
