@@ -8,7 +8,6 @@
       autocomplete="off"
       ref="formData"
     >
-      <p>{{ errors }}</p>
       <div class="form-item">
         <div class="input">
           <i class="iconfont icon-user"></i>

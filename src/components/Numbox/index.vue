@@ -33,7 +33,7 @@ export default {
     },
     max: {
       type: Number,
-      default: 5
+      default: 10
     }
   },
   //   1. 给一个组件身上绑定的任何属性都不会丢失，都会传递下去，如果我们使用props接受收被存入到props属性对象中，如果不使用props接收，会被存入attrs属性对象里

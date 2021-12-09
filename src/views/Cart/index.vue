@@ -54,7 +54,11 @@
                 </p>
               </td>
               <td class="tc">
-                <XtxNumbox :isShow="false" />
+                <XtxNumbox
+                  :isShow="false"
+                  :modelValue="i.count"
+                  @update:modelValue="setCount(i, $event)"
+                />
               </td>
               <td class="tc">
                 <p class="f16 red">
@@ -122,7 +126,14 @@ export default {
         msg({ type: 'error', text: '删除失败' })
       }
     }
-    return { changeAll, changesign, delCart }
+    // 修改数量
+    const setCount = (good, num) => {
+      try {
+        store.dispatch('cart/changeCountActions', { good, num })
+      } catch (error) {
+      }
+    }
+    return { changeAll, changesign, delCart, setCount }
   }
 }
 </script>

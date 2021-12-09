@@ -75,6 +75,12 @@ export default {
       // skuId找到对应的索引
       const currentSign = state.cart.find(item => item.skuId === good.skuId)
       currentSign.selected = sel
+    },
+    // 修改数量
+    changeCount (state, { good, num }) {
+      // skuId找到对应的索引
+      const cur = state.cart.find(item => item.skuId === good.skuId)
+      cur.count = num
     }
   },
   // actions中的函数是promise对象并返回的也是一个promise对象
@@ -127,6 +133,16 @@ export default {
         // console.log(sel)
         commit('isSign', { good, sel })
         return '操作成功'
+      }
+    },
+    // 数量
+    async changeCountActions ({ commit, rootState }, { good, num }) {
+      // 判断状态
+      if (rootState.user.profile.token) {
+        // 登录状态----调用接口存到数据库
+      } else {
+        // console.log(sel)
+        commit('changeCount', { good, num })
       }
     }
   }
