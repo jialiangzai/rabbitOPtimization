@@ -11,6 +11,10 @@ const Cart = () => import('@/views/Cart')
 const Order = () => import('@/views/Member/settlement')
 // 支付
 const Pay = () => import('@/views/Member/pay')
+// 支付结果
+const resultPay = () => import('@/views/Member/pay/result.vue')
+// 支付结果
+const OrderList = () => import('@/views/Member')
 // 创建路由实例
 const routes = [
   {
@@ -40,6 +44,16 @@ const routes = [
       {
         path: '/pay',
         component: Pay
+      },
+      // 支付结果
+      {
+        // 必须约定好的
+        path: '/pay/callback',
+        component: resultPay
+      },
+      {
+        path: '/order/list',
+        component: OrderList
       }
     ]
 

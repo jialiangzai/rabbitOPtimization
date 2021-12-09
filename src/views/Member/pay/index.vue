@@ -35,7 +35,7 @@
         <div class="item">
           <p>支付平台</p>
           <a class="btn wx" href="javascript:;"></a>
-          <a class="btn alipay" href="javascript:;"></a>
+          <a class="btn alipay" :href="payUrl" target="_blank"></a>
         </div>
         <div class="item">
           <p>支付方式</p>
@@ -51,7 +51,7 @@
 </template>
 <script>
 import { findOrder } from '@/api/order'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 // 倒计时
 import { useCountDown } from '@/hooks/index'
@@ -67,13 +67,18 @@ export default {
       console.log(result)
       orderIns.value = result
       // 只有状态是1的时候 开始计时
-      if (orderIns.value.orderState === 1) {
-        start(orderIns.value.countdown)
-      }
+      orderIns.value.orderState === 1 && start(orderIns.value.countdown)
     }
     getPayDetail()
+    // 支付
+    // 支付地址
+    // const payUrl = '后台服务基准地址+支付页面地址+订单ID+回跳地址'
+    const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
+    // encodeURIComponent 编码后url作为参数
+    const redirectUrl = encodeURIComponent('http://www.corho.com:8080/#/pay/callback')
+    const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
     return {
-      getPayDetail, orderIns, countTimeText
+      getPayDetail, orderIns, countTimeText, payUrl
     }
   }
 }
