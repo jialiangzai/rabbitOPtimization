@@ -26,9 +26,11 @@
         <div class="total">
           <!-- 商品的类 -->
           <p>共 {{ effectAll }} 件商品</p>
-          <p>&yen;{{ validateTotal }}</p>
+          <p>&yen;{{ validateTotal.toFixed(2) }}</p>
         </div>
-        <XtxButton type="small" bg="primary">去购物车结算</XtxButton>
+        <XtxButton type="small" bg="primary" @click="$router.push('/cart')">
+          去购物车结算
+        </XtxButton>
       </div>
     </div>
   </div>

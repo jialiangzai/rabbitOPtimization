@@ -5,6 +5,8 @@ const Layout = () => import('@/views/Layout')
 const Detail = () => import('@/views/Goods')
 // 登录
 const Login = () => import('@/views/Login')
+// 列表购物车
+const Cart = () => import('@/views/Cart')
 // 创建路由实例
 const routes = [
   {
@@ -19,6 +21,11 @@ const routes = [
       {
         path: '/goods/:id',
         component: Detail
+      },
+      // 列表购物车
+      {
+        path: '/cart',
+        component: Cart
       }
     ]
 
