@@ -3,8 +3,8 @@ import store from '@/store'
 import router from '@/router'
 const instance = axios.create({
   // 基础路径
-  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-  timeout: 5000
+  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net'
+  // timeout: 5000
 })
 instance.interceptors.request.use(config => {
   // 全局注入token

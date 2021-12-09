@@ -7,6 +7,8 @@ const Detail = () => import('@/views/Goods')
 const Login = () => import('@/views/Login')
 // 列表购物车
 const Cart = () => import('@/views/Cart')
+// 结算订单
+const Order = () => import('@/views/Member/settlement')
 // 创建路由实例
 const routes = [
   {
@@ -26,6 +28,11 @@ const routes = [
       {
         path: '/cart',
         component: Cart
+      },
+      // 结算订单
+      {
+        path: '/settlement',
+        component: Order
       }
     ]
 

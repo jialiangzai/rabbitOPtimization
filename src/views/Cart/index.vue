@@ -85,7 +85,9 @@
           <span class="red">¥{{ validateTotal.toFixed(2) }}</span>
         </div>
         <div class="total">
-          <XtxButton type="middle" bg="primary">下单结算</XtxButton>
+          <XtxButton type="middle" bg="primary" @click="goOrder"
+            >下单结算</XtxButton
+          >
         </div>
       </div>
     </div>
@@ -93,7 +95,8 @@
 </template>
 <script>
 import { mapGetters, useStore } from 'vuex'
-import msg from '@/components/Message'
+import msg from '@/components/Message/index.js'
+import { useRouter } from 'vue-router'
 export default {
   name: 'XtxCartPage',
   computed: {
@@ -106,6 +109,7 @@ export default {
   },
   setup () {
     const store = useStore()
+    const router = useRouter()
     // 全选
     const changeAll = async (sel) => {
       await store.dispatch('cart/allCheckActions', sel)
@@ -133,7 +137,23 @@ export default {
       } catch (error) {
       }
     }
-    return { changeAll, changesign, delCart, setCount }
+    // 结算订单
+    const goOrder = () => {
+      /**
+       * 排除：：：：：
+       * 未登录
+       * 无有效商品
+       */
+      if (!store.state.user.profile.token) {
+        msg({ type: 'warn', text: '请登录后操作' })
+      }
+      if (store.getters['cart/effectiveList'].length === 0) {
+        msg({ type: 'warn', text: '已选商品数不能为零' })
+      }
+      // 跳转
+      router.push('/settlement')
+    }
+    return { changeAll, changesign, delCart, setCount, goOrder }
   }
 }
 </script>
