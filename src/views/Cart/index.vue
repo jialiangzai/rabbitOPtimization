@@ -25,7 +25,7 @@
           </thead>
           <!-- 有效商品 -->
           <tbody>
-            <tr v-for="i in effectiveList" :key="i.id">
+            <tr v-for="i in effectiveList" :key="i.skuId">
               <td>
                 <!-- 如何同时获取子传父参数及商品对象两个参数 -->
                 <XtxCheckbox
@@ -101,15 +101,15 @@ export default {
       'effectiveList',
       'validateSel',
       'validateTotal',
-      'isAll',
-      'effectAll'
+      'isAll'
     ])
   },
   setup () {
     const store = useStore()
     // 全选
-    const changeAll = async (isCheck) => {
-      await store.dispatch('cart/allCheckActions', isCheck)
+    const changeAll = async (sel) => {
+      await store.dispatch('cart/allCheckActions', sel)
+      console.log(sel)
     }
     // 单选
     // 注意参数必须一致

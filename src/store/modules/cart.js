@@ -1,5 +1,5 @@
 
-import { mergeLocalCart, findCartList } from '@/api/cart.js'
+import { mergeLocalCart, findCartList, insertCart, deleteCart, updateCart, checkAllCart } from '@/api/cart.js'
 export default {
   namespaced: true,
   // state: {
@@ -99,20 +99,28 @@ export default {
      * @param {*} param0  上下文vuex中的钩子
      * @param {*} good 调用方法时候传递的商品数据(当前加入cart商品数据)
      */
-    async addCartListActions ({ commit, rootState }, good) {
+    async addCartListActions ({ commit, rootState, dispatch }, good) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
+        await insertCart(good)
+        // 拉新
+        dispatch('getListActions')
+        return '加入购物车成功!'
       } else {
         commit('addCartList', good)
         return '加入购物车成功'
       }
     },
     //  删除商品
-    async delCartactions ({ commit, rootState }, good) {
+    async delCartactions ({ commit, rootState, dispatch }, good) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
+        await deleteCart([good.skuId])
+        // 拉新
+        dispatch('getListActions')
+        return '删除商品成功'
       } else {
         // console.log(good)
         commit('delCart', good)
@@ -120,10 +128,13 @@ export default {
       }
     },
     // 全选
-    async allCheckActions ({ commit, rootState }, sel) {
+    async allCheckActions ({ commit, rootState, dispatch, getters }, sel) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
+        const ids = getters.effectiveList.map(item => item.skuId)
+        await checkAllCart({ selected: sel, ids })
+        dispatch('getListActions')
       } else {
         // console.log(sel)
         commit('allCheck', sel)
@@ -132,10 +143,12 @@ export default {
     },
     // 单选
     // { good:good, sel:sel }
-    async isSignActions ({ commit, rootState }, { good, sel }) {
+    async isSignActions ({ commit, rootState, dispatch }, { good, sel }) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
+        await updateCart({ ...good, selected: sel })
+        dispatch('getListActions')
       } else {
         // console.log(sel)
         commit('isSign', { good, sel })
@@ -143,10 +156,12 @@ export default {
       }
     },
     // 数量
-    async changeCountActions ({ commit, rootState }, { good, num }) {
+    async changeCountActions ({ commit, rootState, dispatch }, { good, num }) {
       // 判断状态
       if (rootState.user.profile.token) {
         // 登录状态----调用接口存到数据库
+        await updateCart({ ...good, count: num })
+        dispatch('getListActions')
       } else {
         // console.log(sel)
         commit('changeCount', { good, num })
