@@ -2,8 +2,9 @@
 // 可复用的逻辑
 // 实现组件的懒加载
 // 组件懒加载
-import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { useIntersectionObserver, useIntervalFn } from '@vueuse/core'
+import { ref, onUnmounted, computed } from 'vue'
+import dayjs from 'dayjs'
 export function useObserver (ajaxFn) {
   // 监听的元素
   const target = ref(null)
@@ -26,4 +27,36 @@ export function useObserver (ajaxFn) {
     })
   // 一定要返回监听的元素
   return { target }
+}
+// 倒计时
+// time要转换的时间单位是秒 Unix 时间戳 (秒)
+
+export function useCountDown (time) {
+  // 时间
+  const countTime = ref(0)
+  const countTimeText = computed(() => {
+    return dayjs.unix(countTime.value).format('mm分ss秒')
+  })
+  const { pause, resume } = useIntervalFn(() => {
+    /* your function */
+    // 自减逻辑
+    countTime.value--
+    // 到零停止
+    if (countTime.value <= 0) {
+      pause()
+    }
+  }, 1000, { immediate: false })
+  // 开始
+  function start (tm) {
+    if (countTime.value === 0) {
+      countTime.value = time || tm
+    }
+    resume()
+  }
+  // 清理一下定时器
+  // 组件的卸载之后
+  onUnmounted(() => {
+    pause()
+  })
+  return { countTime, start, pause, countTimeText }
 }

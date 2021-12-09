@@ -13,7 +13,10 @@
         <!-- orderState - 订单状态，1为待付款、2为待发货(已付款)、3为待收货、4为待评价、5为已完成、6为已取消或超时 -->
         <div class="tip" v-if="orderIns.orderState === 1">
           <p>订单提交成功！请尽快完成支付。</p>
-          <p>支付还剩 <span>24分59秒</span>, 超时后将取消订单</p>
+          <p>
+            支付还剩 <span>{{ countTimeText }}</span
+            >, 超时后将取消订单
+          </p>
         </div>
         <div class="tip" v-if="orderIns.orderState === 2">
           <p>订单已支付！</p>
@@ -50,20 +53,27 @@
 import { findOrder } from '@/api/order'
 import { ref } from 'vue-demi'
 import { useRoute } from 'vue-router'
+// 倒计时
+import { useCountDown } from '@/hooks/index'
 export default {
   name: 'XtxPayPage',
   setup () {
     // 存储支付订单详情
     const orderIns = ref(null)
     const route = useRoute()
+    const { start, countTimeText } = useCountDown()
     const getPayDetail = async () => {
       const { result } = await findOrder(route.query.id)
       console.log(result)
       orderIns.value = result
+      // 只有状态是1的时候 开始计时
+      if (orderIns.value.orderState === 1) {
+        start(orderIns.value.countdown)
+      }
     }
     getPayDetail()
     return {
-      getPayDetail, orderIns
+      getPayDetail, orderIns, countTimeText
     }
   }
 }
