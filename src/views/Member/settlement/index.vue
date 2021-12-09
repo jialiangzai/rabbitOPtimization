@@ -116,12 +116,14 @@
 import { findCheckoutInfo, createOrder } from '@/api/order'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   name: 'XtxPayCheckoutPage',
   setup () {
     const orderDetail = ref({})
     const curAddress = ref(null)
     const router = useRouter()
+    const store = useStore()
     const getDetail = async () => {
       const { result } = await findCheckoutInfo()
       // console.log('结算订单数据', result)
@@ -149,6 +151,8 @@ export default {
       const { result } = await createOrder(reqData)
       // console.log(123, result)
       router.push(`/pay?id=${result.id}`)
+      // 后台已经帮我们做了对应购物车的商品清除我们需要在刷新，拿到数据库最新购物车数据
+      store.dispatch('cart/getListActions')
     }
     return { orderDetail, getDetail, curAddress, submitOrder }
   }
