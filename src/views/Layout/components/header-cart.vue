@@ -3,7 +3,7 @@
     <a class="curr" href="javascript:;">
       <i class="iconfont icon-cart"></i><em>{{ effectAll }}</em>
     </a>
-    <div class="layer">
+    <div class="layer" v-if="effectAll">
       <div class="list">
         <div class="item" v-for="i in effectiveList" :key="i">
           <RouterLink to="">
@@ -19,7 +19,7 @@
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new"></i>
+          <i class="iconfont icon-close-new" @click="delCart(i)"></i>
         </div>
       </div>
       <div class="foot">
@@ -34,7 +34,8 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, useStore } from 'vuex'
+import msg from '@/components/Message/index.js'
 export default {
   name: 'AppHeaderCart',
   computed: {
@@ -43,6 +44,18 @@ export default {
       'validateTotal',
       'effectAll'
     ])
+  },
+  setup () {
+    const store = useStore()
+    const delCart = async (i) => {
+      try {
+        const res = await store.dispatch('cart/delCartactions', i)
+        msg({ type: 'success', text: res })
+      } catch (error) {
+        msg({ type: 'error', text: '删除失败' })
+      }
+    }
+    return { delCart }
   }
 }
 </script>

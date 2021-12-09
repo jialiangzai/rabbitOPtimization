@@ -48,6 +48,16 @@ export default {
         // 新增
         state.cart.unshift(payload)
       }
+    },
+    // 删除商品
+    /**
+     *
+     * @param {*} state 变量对象
+     * @param {*} payload 当前点击删除的商品
+     */
+    delCart (state, payload) {
+      const currentIndex = state.cart.findIndex(item => item.skuId === payload.skuId)
+      state.cart.splice(currentIndex, 1)
     }
   },
   // actions中的函数是promise对象并返回的也是一个promise对象
@@ -66,6 +76,17 @@ export default {
       } else {
         commit('addCartList', good)
         return '加入购物车成功'
+      }
+    },
+    //  删除商品
+    async delCartactions ({ commit, rootState }, good) {
+      // 判断状态
+      if (rootState.user.profile.token) {
+        // 登录状态----调用接口存到数据库
+      } else {
+        // console.log(good)
+        commit('delCart', good)
+        return '删除商品成功'
       }
     }
   }
