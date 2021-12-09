@@ -97,7 +97,7 @@ export default {
     const formData = ref(null)
     // 表单数据
     const fm = ref({
-      account: 'xiaotuxian001',
+      account: 'dijia',
       password: '123456',
       isAgree: false
     })
@@ -121,6 +121,7 @@ export default {
          */
         try {
           await store.dispatch('user/getUse', fm.value)
+          await store.dispatch('cart/mergeCartAction')
           router.replace(route.query.redirectUrl || '/')
           msg({ type: 'success', text: '登录成功' })
         } catch (error) {

@@ -23,9 +23,9 @@ instance.interceptors.response.use(response => {
     // 登录可继续浏览
     // encodeURIComponent 转换uri编码，防止解析地址出问题
     // 最新版本的路由获取完整路径需要加上额外的value - router.currentRoute.value.fullPath
+    store.dispatch('user/logOut')
     const redirectUrl = encodeURIComponent(router.currentRoute.value.fullPath)
     // 退出清除之前信息
-    store.dispatch('user/logOut')
     router.replace(`/login?redirectUrl=${redirectUrl}`)
   }
   return Promise.reject(error)

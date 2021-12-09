@@ -22,7 +22,7 @@ export default {
   },
   mutations: {
     setuse (state, payload) {
-      state.profile.token = payload
+      state.profile = payload
     },
     deluse (state) {
       state.profile = {}
@@ -43,6 +43,9 @@ export default {
     // 退出
     logOut ({ commit }) {
       commit('deluse')
+      // 清空购物车
+      // 注意不能用rootState 要遵守原则
+      commit('cart/setCarrtList', [], { root: true })
     }
   }
 }

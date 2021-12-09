@@ -1,3 +1,5 @@
+
+import { mergeLocalCart, findCartList } from '@/api/cart.js'
 export default {
   namespaced: true,
   // state: {
@@ -81,6 +83,11 @@ export default {
       // skuId找到对应的索引
       const cur = state.cart.find(item => item.skuId === good.skuId)
       cur.count = num
+    },
+    // 不管本地又没有购物车最终都要存储到vuex中及setCarrtList
+    // 登录后获取最新的购物车或合并及操作
+    setCarrtList (state, list) {
+      state.cart = list
     }
   },
   // actions中的函数是promise对象并返回的也是一个promise对象
@@ -144,6 +151,27 @@ export default {
         // console.log(sel)
         commit('changeCount', { good, num })
       }
+    },
+    // 合并
+    async mergeCartAction ({ dispatch, state }) {
+      // 判断本地有无购物车数据
+      if (state.cart.length) {
+        // 数据的映射
+        const currCartreq = state.cart.map(({ skuId, selected, count }) => { return { skuId, selected, count } })
+        // 数据库合并但是客户端还没更新
+        await mergeLocalCart(currCartreq)
+      }
+      // 如果本地没有购物车数据
+      dispatch('getListActions')
+    },
+
+    // 最新
+    // 登录后获取最新的购物车数据----这里没有参数是登录人token为参数
+    async getListActions ({ commit }) {
+      // console.log(sel)
+      //  此时已经登录直接调接口存储到数据库----后台处理
+      const { result } = await findCartList()
+      commit('setCarrtList', result)
     }
   }
 }
