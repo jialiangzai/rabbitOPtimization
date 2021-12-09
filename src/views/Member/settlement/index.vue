@@ -104,27 +104,53 @@
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <XtxButton type="large" bg="primary">提交订单</XtxButton>
+          <XtxButton type="large" bg="primary" @click="submitOrder"
+            >提交订单</XtxButton
+          >
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { findCheckoutInfo } from '@/api/order'
-import { ref } from 'vue-demi'
+import { findCheckoutInfo, createOrder } from '@/api/order'
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'XtxPayCheckoutPage',
   setup () {
     const orderDetail = ref({})
     const curAddress = ref(null)
+    const router = useRouter()
     const getDetail = async () => {
       const { result } = await findCheckoutInfo()
+      // console.log('结算订单数据', result)
       orderDetail.value = result
       curAddress.value = orderDetail.value.userAddresses[0]
     }
     getDetail()
-    return { orderDetail, getDetail, curAddress }
+    // 提交订单
+    // deliveryTimeType: 1, 配送时间类型，1为不限，2为工作日，3为双休或假日
+    // payType: 1, 支付方式，1为在线支付，2为货到付款
+    // buyerMessage: '', 买家留言
+    // addressId: null, // 地址id
+    // goods: [] // { skuId, count } 由所有商品的skuId 和 count字段组成的数组
+    const submitOrder = async () => {
+      //  提交订单需要的参数对象
+      const reqData = reactive({
+        deliveryTimeType: 1,
+        payType: 1,
+        buyerMessage: '',
+        addressId: '1429265915203031042',
+        goods: [] // { skuId, count } 由所有商品的skuId 和 count字段组成的数组
+      })
+      reqData.goods = orderDetail.value.goods.map(({ skuId, count }) => ({ skuId, count }))
+      // 调接口
+      const { result } = await createOrder(reqData)
+      // console.log(123, result)
+      router.push(`/pay?id=${result.id}`)
+    }
+    return { orderDetail, getDetail, curAddress, submitOrder }
   }
 }
 </script>
